@@ -5,6 +5,9 @@ from pyvi import ViTokenizer
 import nltk
 nltk.download('punkt')
 from collections import Counter
+from setting import STOP_WORD_DIR
+
+
 
 class Data:
     def __init__(self,path):
@@ -12,10 +15,12 @@ class Data:
         self.Data=[]
         self.Label=[]
         self.all_word=[]
+
+
     def load_data(self):
         dataset=os.listdir(self.path)
         stop_word=[]
-        with open('D:\\project1\\stopword.txt',encoding='utf8') as f:
+        with open(STOP_WORD_DIR,encoding='utf8') as f:
             for line in f:
                 stop_word.append(ViTokenizer.tokenize(line).replace(' ','_'))
         index=-1
@@ -36,6 +41,8 @@ class Data:
                     self.all_word.append(word)
                 self.Label.append(index)
                 self.Data.append(file_text)
+
+
     def process_data(self,all_words):
         features=Counter(all_words)
         most_features=[x for (x,y) in features.most_common() if y>3]
@@ -44,3 +51,4 @@ class Data:
         X=vectorizer.fit_transform(self.Data)
         return self.Data,self.Label
         
+
