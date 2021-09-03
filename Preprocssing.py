@@ -12,7 +12,7 @@ from setting import STOP_WORD_DIR
 class Data:
     def __init__(self,path):
         self.path=path
-        self.Data=[]
+        self.all_data=[]
         self.Label=[]
         self.all_word=[]
 
@@ -26,6 +26,7 @@ class Data:
         index=-1
         for data in dataset:
             index+=1
+            print(data,index)
             datapath=os.listdir(os.path.join(self.path,data))
             for filepath in datapath:
                 file_text=open(os.path.join(self.path,data,filepath),encoding='utf16').read().lower()
@@ -40,7 +41,7 @@ class Data:
                 for word in words:
                     self.all_word.append(word)
                 self.Label.append(index)
-                self.Data.append(file_text)
+                self.all_data.append(file_text)
 
 
     def process_data(self,all_words):
@@ -48,7 +49,7 @@ class Data:
         most_features=[x for (x,y) in features.most_common() if y>3]
         vectorizer=TfidfVectorizer()
         vocab=vectorizer.fit_transform(most_features)
-        X=vectorizer.fit_transform(self.Data)
-        return self.Data,self.Label
+        X=vectorizer.fit_transform(self.all_data)
+        return X,self.Label
         
 
